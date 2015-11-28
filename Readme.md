@@ -8,7 +8,7 @@ composer require nassau/registry-compiler
 
 Add the compiler pass to one of your bundles:
 
-```
+```php
 # somewhere inside AcmeBundle.php
 
 	public function build(ContainerBuilder $container)
@@ -19,7 +19,7 @@ Add the compiler pass to one of your bundles:
 
 ## Usage
 
-```
+```yaml
 services:
     foobar.manager:
         class: FooBaringManager
