@@ -1,0 +1,101 @@
+services:
+
+  main_registry:
+
+    class: ArrayObject
+    tags:
+      - name: nassau.registry
+        method: exchangeArray
+        use_collection: true
+        tag: secondary_registries
+
+  dates_registry:
+    class: ArrayObject
+    tags:
+      - name: nassau.registry
+        method: offsetSet
+        tag: dates_registry
+      - name: secondary_registries
+
+  date.today:
+    class: DateTime
+    arguments: ['today']
+    tags:
+      - name: dates_registry
+
+  date.tomorrow:
+    class: DateTime
+    arguments: ['tomorrow']
+    tags:
+      - name: dates_registry
+
+  date.new_year:
+    class: DateTime
+    arguments: ['1 Jan Next Year']
+    tags:
+      - name: dates_registry
+
+  values_registry:
+    class: ArrayObject
+    tags:
+      - name: nassau.registry
+        method: offsetSet
+        tag: values_registry
+        order: priority
+        priority_field: weight
+        default_priority: 1
+        class: Symfony\Component\DependencyInjection\Parameter
+      - name: secondary_registries
+
+  value.e:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: [2.71828183]
+    tags:
+      - name: values_registry
+        # weight: 2 -- use default
+
+  values.ln2:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: [0.6931471]
+    tags:
+      - name: values_registry
+        weight: 0
+
+  value.pi:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: [3.14159265]
+    tags:
+      -
+        name: values_registry
+        weight: 3
+
+  names_registry:
+    class: ArrayObject
+    tags:
+      - name: nassau.registry
+        method: offsetSet
+        tag: names_registry
+        order: indexed
+        alias_field: key
+      - name: secondary_registries
+
+  names.blue:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: ["#0000FF"]
+    tags:
+      - name: names_registry
+        key: blue
+
+  names.red:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: ["#FF0000"]
+    tags:
+      - name: names_registry
+        key: red
+
+  names.green:
+    class: Symfony\Component\DependencyInjection\Parameter
+    arguments: ["#00FF00"]
+    tags:
+      - name: names_registry
+        key: green
