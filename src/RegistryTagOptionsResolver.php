@@ -26,11 +26,14 @@ class RegistryTagOptionsResolver extends OptionsResolver
 			'alias_field' => 'alias',
 			// require item to be instance of
 			'class' => null,
+			// additional values passed to setter method
+			'metadata' => null,
 		]);
 
 		$this->setRequired('tag');
 		$this->setAllowedValues('order', [self::ORDER_NATURAL, self::ORDER_PRIORITY, self::ORDER_INDEXED]);
 		$this->setAllowedTypes('use_collection', 'boolean');
+		$this->setAllowedTypes('metadata', ['string', 'null']);
 
 	}
 
