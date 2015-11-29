@@ -1,0 +1,51 @@
+services:
+  metadata_one_value:
+    class: Nassau\RegistryCompiler\MetaDataIterator
+    tags:
+      - name: nassau.registry
+        tag: metadata_one_value
+        metadata: locale
+        method: offsetSet
+
+  locale_item:
+    class: StdClass
+    public: false
+    tags:
+      - name: metadata_one_value
+        locale: en
+
+  movie_quotes:
+    class: Nassau\RegistryCompiler\MetaDataIterator
+    tags:
+      - name: nassau.registry
+        tag: movie_quotes
+        order: indexed
+        method: offsetSet
+
+        # allow any of the three metadata values to be present:
+
+        metadata: "author, quote, answer"
+
+  deep_thought:
+    class: StdClass
+    public: false
+    tags:
+      - name: movie_quotes
+        alias: "The Hitchhiker’s Guide to the Galaxy"
+
+        # below are metadata values:
+
+        author: "Deep Thought"
+        quote: "the answer to life the universe and everything"
+        answer: 42
+
+  dont_panic:
+    class: StdClass
+    public: false
+    tags:
+      - name: movie_quotes
+        alias: "unknown"
+
+        # value & author: missing
+
+        quote: "Don’t Panic"
