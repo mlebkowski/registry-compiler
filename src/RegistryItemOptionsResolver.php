@@ -28,7 +28,7 @@ class RegistryItemOptionsResolver extends OptionsResolver
 		}
 
 		if (null !== $options['metadata']) {
-			foreach (preg_split('/,?\s+/', $options['metadata']) as $name) {
+			foreach (preg_split('/,\s*|,?\s+/', $options['metadata']) as $name) {
 				if ($this->isDefined($name)) {
 					throw new \InvalidArgumentException(sprintf(
 						'You cannot use "%s" as metadata since it’s already defined', $name
