@@ -14,7 +14,7 @@ class RegistryItemOptionsResolver extends OptionsResolver
 				$this->setDefaults([
 					$options['priority_field'] => $options['default_priority'],
 				]);
-				$this->setAllowedTypes($options['priority_field'], 'integer');
+				$this->setAllowedTypes($options['priority_field'], 'int');
 				break;
 
 			case RegistryTagOptionsResolver::ORDER_INDEXED:

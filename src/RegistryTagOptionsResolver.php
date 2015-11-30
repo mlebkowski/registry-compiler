@@ -30,7 +30,7 @@ class RegistryTagOptionsResolver extends OptionsResolver
 
 		$this->setRequired('tag');
 		$this->setAllowedValues('order', [self::ORDER_NATURAL, self::ORDER_PRIORITY, self::ORDER_INDEXED]);
-		$this->setAllowedTypes('use_collection', 'boolean');
+		$this->setAllowedTypes('use_collection', 'bool');
 
 	}
 
