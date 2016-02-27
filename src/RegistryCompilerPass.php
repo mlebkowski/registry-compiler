@@ -11,6 +11,17 @@ class RegistryCompilerPass implements CompilerPassInterface
 {
 	const REGISTRY_TAG_NAME = 'nassau.registry';
 
+	public function register(ContainerBuilder $container)
+	{
+		foreach ($container->getCompilerPassConfig()->getPasses() as $pass) {
+			if ($pass instanceof RegistryCompilerPass) {
+				return;
+			}
+		};
+
+		$container->addCompilerPass($this);
+	}
+
 	/**
 	 * You can modify the container here before it is dumped to PHP code.
 	 *

@@ -6,14 +6,16 @@
 composer require nassau/registry-compiler
 ```
 
-Add the compiler pass to one of your bundles:
+Add the compiler pass to one of your bundles. Since it may be used in some of your dependencies,
+the recommended way is to use the `register` method of the Pass to ensure only one instance is
+registered.
 
 ```php
 # somewhere inside AcmeBundle.php
 
 	public function build(ContainerBuilder $container)
 	{
-		$container->addCompilerPass(new RegistryCompilerPass());
+		(new RegistryCompilerPass)->register($container);
 	}
 ```
 
