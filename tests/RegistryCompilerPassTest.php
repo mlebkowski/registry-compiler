@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: puck
- * Date: 28/11/15
- * Time: 01:49
- */
 
 namespace Nassau\RegistryCompiler;
-
 
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

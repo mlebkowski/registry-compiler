@@ -42,6 +42,9 @@ services:
             # `public function addFooBarProvider($index, $foobar)`
             #
             # This is an optional attribute, defaults to "set", as per symfonys conventions
+            #
+            # Setting this to null/empty value will automatically enable the `use_collection`
+            # option below.
 
               method: addFooBarProvider
 
@@ -52,6 +55,18 @@ services:
             # `public function addFooBarProviders(\ArrayObject $items)`
 
               use_collection: false
+
+            # You may decide to use a constructor injection instead of a setter when using the
+            # above option. In this case set the method to null, so the compiler won’t add any
+            # `calls` to your service definition. Instead, setup your dependency yourself:
+            #
+            # foo:
+            #   arguments: [ @foo.providers ]
+            #   tags:
+            #     - { name: nassau.registry, use_collection: providers, method: ~ }
+            #
+
+              use_collection: collection
 
             # Choose an order in which the services will be provided
             #   natural (default): just the way the container returns them

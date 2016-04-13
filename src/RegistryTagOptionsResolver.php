@@ -2,6 +2,7 @@
 
 namespace Nassau\RegistryCompiler;
 
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RegistryTagOptionsResolver
@@ -34,7 +35,14 @@ class RegistryTagOptionsResolver
 		])
 			->setRequired('tag')
 			->setAllowedValues('order', [self::ORDER_NATURAL, self::ORDER_PRIORITY, self::ORDER_INDEXED])
-			->setAllowedTypes('use_collection', 'bool');
+			->setAllowedTypes('use_collection', ['bool', 'string'])
+			->setNormalizer('use_collection', function (Options $options, $value) {
+				if (!$options['method']) {
+					$value = $value ?: true;
+				}
+
+				return is_string($value) ? $value : ($value ? 'collection' : false);
+			});
 
 	}
 

@@ -77,10 +77,14 @@ class RegistryCompilerPass implements CompilerPassInterface
 
 		$targetId = $registryId;
 		$methodName = $tagOptions['method'];
-		if ($tagOptions['use_collection']) {
-			$targetId = "{$registryId}.collection";
+		$collectionName = $tagOptions['use_collection'];
+
+		if ($collectionName) {
+			$targetId = "{$registryId}.{$collectionName}";
 			$container->setDefinition($targetId, new Definition(\ArrayObject::class))->setPublic(false);
-			$container->getDefinition($registryId)->addMethodCall($methodName, [new Reference($targetId)]);
+			if ($methodName) {
+				$container->getDefinition($registryId)->addMethodCall($methodName, [new Reference($targetId)]);
+			}
 			$methodName = 'offsetSet';
 		}
 

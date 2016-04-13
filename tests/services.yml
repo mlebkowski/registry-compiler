@@ -3,10 +3,11 @@ services:
   main_registry:
 
     class: ArrayObject
+    arguments: [ '@main_registry.inner' ]
     tags:
       - name: nassau.registry
-        method: exchangeArray
-        use_collection: true
+        method: ~
+        use_collection: inner
         tag: secondary_registries
 
   dates_registry:
