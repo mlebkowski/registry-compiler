@@ -3,6 +3,7 @@
 namespace Nassau\RegistryCompiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
@@ -14,12 +15,12 @@ class RegistryCompilerPass implements CompilerPassInterface
 	public function register(ContainerBuilder $container)
 	{
 		foreach ($container->getCompilerPassConfig()->getPasses() as $pass) {
-			if ($pass instanceof RegistryCompilerPass) {
+			if ($pass instanceof self) {
 				return;
 			}
 		};
 
-		$container->addCompilerPass($this);
+		$container->addCompilerPass($this, PassConfig::TYPE_OPTIMIZE);
 	}
 
 	/**

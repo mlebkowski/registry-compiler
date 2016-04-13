@@ -4,15 +4,20 @@ namespace Nassau\RegistryCompiler;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RegistryTagOptionsResolver extends OptionsResolver
+class RegistryTagOptionsResolver
 {
 	const ORDER_NATURAL = 'natural';
 	const ORDER_PRIORITY = 'priority';
 	const ORDER_INDEXED = 'indexed';
 
+	/**
+	 * @var OptionsResolver
+	 */
+	private $resolver;
+
 	public function __construct()
 	{
-		$this->setDefaults([
+		$this->resolver = (new OptionsResolver)->setDefaults([
 			// this method will be used on collection
 			'method' => 'set',
 			// use one call with the whole collection, or one call per item?
@@ -26,12 +31,16 @@ class RegistryTagOptionsResolver extends OptionsResolver
 			'alias_field' => 'alias',
 			// require item to be instance of
 			'class' => null,
-		]);
+		])
+			->setRequired('tag')
+			->setAllowedValues('order', [self::ORDER_NATURAL, self::ORDER_PRIORITY, self::ORDER_INDEXED])
+			->setAllowedTypes('use_collection', 'bool');
 
-		$this->setRequired('tag');
-		$this->setAllowedValues('order', [self::ORDER_NATURAL, self::ORDER_PRIORITY, self::ORDER_INDEXED]);
-		$this->setAllowedTypes('use_collection', 'bool');
+	}
 
+	public function resolve(array $options)
+	{
+		return $this->resolver->resolve($options);
 	}
 
 }
