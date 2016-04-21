@@ -1,5 +1,8 @@
 # Tag your services to associate them with one common registry
 
+Add the `nassau.registry` tag to a service and it will receive a collection of other services tagged with the name you chose. Similar to the event dispatcher, cache warmers, twig extensions, etc.
+
+
 ## Installation
 
 ```
