@@ -1,7 +1,8 @@
 # Tag your services to associate them with one common registry
 
-Add the `nassau.registry` tag to a service and it will receive a collection of other services tagged with the name you chose. Similar to the event dispatcher, cache warmers, twig extensions, etc.
+Add the `nassau.registry` tag to a service and it will receive a collection of other services tagged with the name you chose. Similar to the event dispatcher, cache warmers, twig extensions, etc. 
 
+If you ever created a `CompilerPass` and used `$containerBuilder->findTaggedServiceIds()` inside you could probably replace it with `nassau/registry-compiler`.
 
 ## Installation
 
@@ -116,4 +117,67 @@ services:
 
             # This will result in calling method `addFooBarProvider` on `foobar.manager`
             # service with parameters: "cache" and `foobar.provider.cache` instance.
+```
+
+## Example
+
+Given an interface:
+
+```php
+interface FooBarInterface {
+    public function makeFooBar($input);
+}
+```
+
+You may need to split the implementation across multiple classes. Maybe it’s something like a monolog processor — each one does it’s thing and moves on. To simplify the usage, you create a chain implementation so the classes using FooBarInterface knows nothing about the details:
+
+```
+class ChainFooBar implements FooBarInterface {
+
+    /** @var FooBarInterface[] **/
+    private $collection = [];
+
+    public function addFooBar($name, FooBarInterface $fooBar) {
+        $this->collection[$name] = $fooBar;
+    }
+
+    public function makeFooBar($input) {
+        foreach ($this->collection as $fooBar) {
+            $fooBar->makeFooBar($input);
+        }
+    }
+}
+```
+
+So far so good. So now you just need to wire every implementations together using the container. As long as you have a fixed number of implementations you may just use calls:
+
+```yml
+services:
+  foo_bar.chain:
+    class: ChainFooBar
+    calls: 
+      - ['addFooBar', [ 'alpha', '@foo_bar.alpha' ] ]
+      - ['addFooBar', [ 'bravo', '@foo_bar.bravo' ] ]
+```
+
+But this gets messy and there is no easy way to add more implementations, especially if you’re only making a library / architecture and it’s up to the developer to make the implementations.
+
+This is where `nassau.registry` comes into play. Instead of manually connecting the implementations to the chain, you register a tag, so any service can hook itself up:
+
+```yaml
+services:
+  foo_bar.chain:
+    class: ChainFooBar
+    tags:
+      - name: nassau.registry
+        tag: foo_bar
+        method: addFooBar
+        order: indexed
+        class: FooBarInterface
+
+  foo_bar.alpha:
+    class: FooBarAlpha
+    tags:
+      - name: foo_bar
+        alias: alpha
 ```
