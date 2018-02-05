@@ -2,8 +2,8 @@
   "name": "nassau/registry-compiler",
   "type": "library",
   "require": {
-    "symfony/symfony": "~2.3",
-    "symfony/options-resolver": "~2.3"
+    "symfony/symfony": "~2.3 | ~3.0",
+    "symfony/options-resolver": "~2.3 | ~3.0"
   },
   "license": "MIT",
   "authors": [
